@@ -14,6 +14,8 @@ LudOS is not ready for production and contains bugs. However, you can get some h
 
 The license of LudOS is the same as the one of LibreELEC, but adds some packages like Snes9x or Genesis Plus GX that are protected by a Non-Commercial license. Thus, you can't sell LudOS or a derivative without removing these packages.
 
+LibreELEC original code is released under [GPLv2](https://www.gnu.org/licenses/gpl-2.0.html).
+
 ## Build environment
 [Build Commands for LE](https://wiki.libreelec.tv/development/build-commands).
 
