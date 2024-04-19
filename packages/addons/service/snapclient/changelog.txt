@@ -1,11 +1,8 @@
-102
-- Update to 0.15.0
-- Add alsa-plugins
+2
+- asio: update to 1.28.0
+- nqptp: update to 1.2.1
+- shairport-sync: update to 4.2
 
-101
-- Always restart service
-- Improve latency setting
-- Keep daemon state
-
-100
-- Initial addon
+1
+- asio: update to 1.27.0
+- snapcast: update to 0.27.0

@@ -1,2 +1,2 @@
-100
-- initial LibreELEC version
+1
+- ttyd: update to 1.7.3

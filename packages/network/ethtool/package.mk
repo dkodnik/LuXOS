@@ -3,10 +3,10 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="ethtool"
-PKG_VERSION="5.1"
-PKG_SHA256="65feac1fec6565290b7784b2efc925dee900a9b11202ce7c6c30a967c3da3387"
+PKG_VERSION="6.1"
+PKG_SHA256="c41fc881ffa5a40432d2dd829eb44c64a49dee482e716baacf9262c64daa8f90"
 PKG_LICENSE="GPL"
-PKG_SITE="http://www.kernel.org/pub/software/network/ethtool/"
-PKG_URL="http://www.kernel.org/pub/software/network/ethtool/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS_TARGET="toolchain"
+PKG_SITE="https://www.kernel.org/pub/software/network/ethtool/"
+PKG_URL="https://www.kernel.org/pub/software/network/ethtool/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+PKG_DEPENDS_TARGET="toolchain libmnl"
 PKG_LONGDESC="Ethtool is used for querying settings of an ethernet device and changing them."

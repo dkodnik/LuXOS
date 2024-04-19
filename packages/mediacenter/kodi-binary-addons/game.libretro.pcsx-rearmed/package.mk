@@ -2,13 +2,13 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="game.libretro.pcsx-rearmed"
-PKG_VERSION="22.0.0.9-Leia"
-PKG_SHA256="d19740346723a8900284006972d6c5fae6ef5aed177c3b6928558790ff949a95"
-PKG_REV="2"
+PKG_VERSION="23.0.0.45-Nexus"
+PKG_SHA256="1e55d9486aeb51568594bec841b3c3fcb5c29bcd21a4b2dbb813b3460a878133"
+PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/kodi-game/game.libretro.pcsx-rearmed"
-PKG_URL="https://github.com/kodi-game/game.libretro.pcsx-rearmed/archive/$PKG_VERSION.tar.gz"
+PKG_URL="https://github.com/kodi-game/game.libretro.pcsx-rearmed/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain kodi-platform libretro-pcsx-rearmed"
 PKG_SECTION=""
 PKG_LONGDESC="game.libretro.pcsx-rearmed: PCSX Rearmed for Kodi"

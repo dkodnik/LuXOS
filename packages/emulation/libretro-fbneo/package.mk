@@ -2,15 +2,15 @@
 # Copyright (C) 2021-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-fbneo"
-PKG_VERSION="67f87d5e58ac4bbc88c61d263ecb2af7faea49f3"
-PKG_SHA256="cc3b588d18dcf207e0e6bba258e9dfc602a3e1c7602f7db752ec34d5d36414ed"
+PKG_VERSION="afcd7234fc93b2824f6b8fe1aa80c142a61ad528"
+PKG_SHA256="94d5f9215a3231ee040a2841e3512e32cc21416e7eec5f6c3b42f1d6eca2a4ea"
 PKG_LICENSE="OSS"
 PKG_SITE="https://github.com/libretro/FBNeo"
 PKG_URL="https://github.com/libretro/FBNeo/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain kodi-platform"
 PKG_LONGDESC="game.libretro.fbneo: FinalBurn Neo GameClient for Kodi"
 PKG_TOOLCHAIN="make"
-PKG_BUILD_FLAGS="+lto"
+PKG_BUILD_FLAGS="-gold +lto"
 
 PKG_LIBNAME="fbneo_libretro.so"
 PKG_LIBPATH="src/burner/libretro/${PKG_LIBNAME}"

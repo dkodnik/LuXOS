@@ -3,11 +3,11 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="gnutls"
-PKG_VERSION="3.6.14"
-PKG_SHA256="5630751adec7025b8ef955af4d141d00d252a985769f51b4059e5affa3d39d63"
+PKG_VERSION="3.7.8"
+PKG_SHA256="c58ad39af0670efe6a8aee5e3a8b2331a1200418b64b7c51977fb396d4617114"
 PKG_LICENSE="LGPL2.1"
 PKG_SITE="https://gnutls.org"
-PKG_URL="https://www.gnupg.org/ftp/gcrypt/gnutls/v3.6/gnutls-$PKG_VERSION.tar.xz"
+PKG_URL="https://www.gnupg.org/ftp/gcrypt/gnutls/v${PKG_VERSION:0:3}/${PKG_NAME}-${PKG_VERSION}.tar.xz"
 PKG_DEPENDS_TARGET="toolchain libidn2 nettle zlib"
 PKG_LONGDESC="A library which provides a secure layer over a reliable transport layer."
 
@@ -16,15 +16,16 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-doc \
                            --disable-guile \
                            --disable-libdane \
                            --disable-padlock \
+                           --disable-rpath \
                            --disable-tests \
                            --disable-tools \
                            --disable-valgrind-tests \
-                           --enable-local-libopts \
                            --with-idn \
                            --with-included-libtasn1 \
                            --with-included-unistring \
                            --without-p11-kit \
                            --without-tpm"
-makeinstall_target() {
-  make install DESTDIR="$INSTALL/../.INSTALL_PKG"
+
+post_configure_target() {
+  libtool_remove_rpath libtool
 }

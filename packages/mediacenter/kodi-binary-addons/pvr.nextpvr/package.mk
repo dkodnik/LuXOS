@@ -3,14 +3,14 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="pvr.nextpvr"
-PKG_VERSION="3.3.21-Leia"
-PKG_SHA256="1f5576070a0bf076d1f28cdd547bc4ff134861c18a71cff7fd036eaacc357707"
+PKG_VERSION="20.4.3-Nexus"
+PKG_SHA256="752dff532a277797f3fefc1ced7fea6efb8d92982d9040c4080c1e6dbab203a0"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/kodi-pvr/pvr.nextpvr"
-PKG_URL="https://github.com/kodi-pvr/pvr.nextpvr/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain kodi-platform"
+PKG_URL="https://github.com/kodi-pvr/pvr.nextpvr/archive/${PKG_VERSION}.tar.gz"
+PKG_DEPENDS_TARGET="toolchain kodi-platform tinyxml2"
 PKG_SECTION=""
 PKG_SHORTDESC="pvr.nextpvr"
 PKG_LONGDESC="pvr.nextpvr"
@@ -19,5 +19,5 @@ PKG_IS_ADDON="yes"
 PKG_ADDON_TYPE="xbmc.pvrclient"
 
 pre_configure_target() {
-  CXXFLAGS="$CXXFLAGS -Wno-narrowing"
+  CXXFLAGS+=" -Wno-narrowing"
 }

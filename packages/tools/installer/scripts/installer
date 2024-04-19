@@ -78,7 +78,7 @@ get_device_unmount() {
   # provides: DEVICES
 
   DEVICES=""
-  DEVICES=$(parted -s -m -l 2>/dev/null | grep -E '^/dev/sd|^/dev/mmcblk|^/dev/nvme' | grep -E -v '.?rpmb|.?boot?' | cut -f1 -d ":")
+  DEVICES=$(parted -s -m -l 2>/dev/null | grep -E '^/dev/sd|^/dev/mmcblk|^/dev/nvme' | grep -E -v '^[^:]*rpmb|^[^:]*boot' | cut -f1 -d ":")
 
   for i in $(cat /proc/mounts | grep -E '^/dev/sd' | cut -f1 -d " " | sed "s/[0-9].*$//"); do
     DEVICES=$(echo $DEVICES | sed -e "s|$i||")
@@ -180,7 +180,7 @@ do_install_quick() {
   {
     # remove all partitions
     msg_progress_install "1" "Get all partitions $INSTALL_DEVICE"
-    get_partition $INSTALL_DEVICE
+    get_partition $INSTALL_DEVICE 2>>$LOGFILE
 
     msg_progress_install "5" "Wiping disk $INSTALL_DEVICE"
     dd if=/dev/zero of=$INSTALL_DEVICE bs=4096 count=1024 2>>$LOGFILE
@@ -261,10 +261,10 @@ do_install_quick() {
 
     # install system files
     msg_progress_install "60" "Installing Kernel"
-    cp /flash/KERNEL $TMPDIR/part1 >> $LOGFILE 2>&1
+    cp "/flash/$IMAGE_KERNEL" $TMPDIR/part1/KERNEL >> $LOGFILE 2>&1
 
     msg_progress_install "65" "Installing System"
-    cp /flash/SYSTEM $TMPDIR/part1 >> $LOGFILE 2>&1
+    cp "/flash/$IMAGE_SYSTEM" $TMPDIR/part1/SYSTEM >> $LOGFILE 2>&1
     sync
 
     # configuring bootloader
@@ -461,6 +461,21 @@ LOGBACKUP="/flash/logs/$(date +%Y%m%d%H%M%S).log"
 
 export COLORTERM="1"
 export NEWT_COLORS="$WHIPTAIL_COLORS"
+
+IMAGE_KERNEL="KERNEL"
+IMAGE_SYSTEM="SYSTEM"
+for arg in $(cat /proc/cmdline); do
+  case $arg in
+    BOOT_IMAGE=*)
+      IMAGE_KERNEL="${arg#*=}"
+      [ "${IMAGE_KERNEL:0:1}" = "/" ] && IMAGE_KERNEL="${IMAGE_KERNEL:1}"
+      ;;
+    SYSTEM_IMAGE=*)
+      IMAGE_SYSTEM="${arg#*=}"
+      [ "${IMAGE_SYSTEM:0:1}" = "/" ] && IMAGE_SYSTEM="${IMAGE_SYSTEM:1}"
+      ;;
+  esac
+done
 
 # prepare temporary directory
 rm -rf $TMPDIR

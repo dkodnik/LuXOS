@@ -2,18 +2,30 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="kernel-firmware"
-PKG_VERSION="20190514"
-PKG_SHA256="13dede60a1ba7b967f0eef72f40720a2ea0678dee54ea3fc44800f58ec38aafc"
+PKG_VERSION="20230210"
+PKG_SHA256="6e3d9e8d52cffc4ec0dbe8533a8445328e0524a20f159a5b61c2706f983ce38a"
 PKG_LICENSE="other"
 PKG_SITE="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/"
-PKG_URL="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/$PKG_VERSION.tar.gz"
+PKG_URL="https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-${PKG_VERSION}.tar.xz"
 PKG_NEED_UNPACK="${PROJECT_DIR}/${PROJECT}/packages/${PKG_NAME} ${PROJECT_DIR}/${PROJECT}/devices/${DEVICE}/packages/${PKG_NAME}"
 PKG_LONGDESC="kernel-firmware: kernel related firmware"
 PKG_TOOLCHAIN="manual"
 
+configure_package() {
+  PKG_FW_SOURCE=${PKG_BUILD}/.copied-firmware
+}
+
+post_patch() {
+  (
+    cd ${PKG_BUILD}
+    mkdir -p "${PKG_FW_SOURCE}"
+      ./copy-firmware.sh --verbose "${PKG_FW_SOURCE}"
+  )
+}
+
 # Install additional miscellaneous drivers
 makeinstall_target() {
-  FW_TARGET_DIR=$INSTALL/$(get_full_firmware_dir)
+  FW_TARGET_DIR=${INSTALL}/$(get_full_firmware_dir)
 
   if find_file_path config/kernel-firmware.dat; then
     FW_LISTS="${FOUND_PATH}"
@@ -33,17 +45,19 @@ makeinstall_target() {
       [[ ${fwline} =~ ^#.* ]] && continue
       [[ ${fwline} =~ ^[[:space:]] ]] && continue
 
-      while read -r fwfile; do
-        [ -d "${PKG_BUILD}/${fwfile}" ] && continue
+      eval "(cd ${PKG_FW_SOURCE} && find "${fwline}" >/dev/null)" || die "ERROR: Firmware pattern does not exist: ${fwline}"
 
-        if [ -f "${PKG_BUILD}/${fwfile}" ]; then
+      while read -r fwfile; do
+        [ -d "${PKG_FW_SOURCE}/${fwfile}" ] && continue
+
+        if [ -f "${PKG_FW_SOURCE}/${fwfile}" ]; then
           mkdir -p "$(dirname "${FW_TARGET_DIR}/${fwfile}")"
-            cp -Lv "${PKG_BUILD}/${fwfile}" "${FW_TARGET_DIR}/${fwfile}"
+            cp -Lv "${PKG_FW_SOURCE}/${fwfile}" "${FW_TARGET_DIR}/${fwfile}"
         else
           echo "ERROR: Firmware file ${fwfile} does not exist - aborting"
           exit 1
         fi
-      done <<< "$(cd ${PKG_BUILD} && eval "find "${fwline}"")"
+      done <<< "$(cd ${PKG_FW_SOURCE} && eval "find "${fwline}"")"
     done < "${fwlist}"
   done
 
@@ -53,12 +67,18 @@ makeinstall_target() {
   # They are also not required at all if the kernel is not suitably configured.
   if listcontains "${FIRMWARE}" "brcmfmac_sdio-firmware-rpi" || \
      ! grep -q "^CONFIG_BRCMFMAC_SDIO=y" ${PKG_KERNEL_CFG_FILE}; then
-    rm -fr $FW_TARGET_DIR/brcm/brcmfmac43430*-sdio.*
-    rm -fr $FW_TARGET_DIR/brcm/brcmfmac43455*-sdio.*
+    rm -fr ${FW_TARGET_DIR}/brcm/brcmfmac43430*-sdio.*
+    rm -fr ${FW_TARGET_DIR}/brcm/brcmfmac43455*-sdio.*
   fi
 
   # brcm pcie firmware is only needed by x86_64
-  [ "$TARGET_ARCH" != "x86_64" ] && rm -fr $FW_TARGET_DIR/brcm/*-pcie.*
+  [ "${TARGET_ARCH}" != "x86_64" ] && rm -fr ${FW_TARGET_DIR}/brcm/*-pcie.*
+
+  # Upstream doesn't name the file correctly so we need to symlink it
+  if [ -f "${FW_TARGET_DIR}/rtl_bt/rtl8723bs_config-OBDA8723.bin" ]; then
+    #cd "${FW_TARGET_DIR}/rtl_bt"
+    ln -s "rtl8723bs_config-OBDA8723.bin" "${FW_TARGET_DIR}/rtl_bt/rtl8723bs_config.bin"
+  fi
 
   # Cleanup - which may be project or device specific
   find_file_path scripts/cleanup.sh && ${FOUND_PATH} ${FW_TARGET_DIR} || true

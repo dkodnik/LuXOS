@@ -3,14 +3,12 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="RTL8812AU"
-PKG_VERSION="d88d8b2e2a1b33ebdd62b8a5de307b37c39d8477"
-PKG_SHA256="c5b2fcc6cbf6901e63f75ece49a8ce3219004536cfc585b9815b34d943c9f311"
+PKG_VERSION="d98018d038a5db96066e79f26ed4a72f2fe1774e"
+PKG_SHA256="69891a35724a6c30fcb29d9eba783879e0bee3f5f7847341fce06101a7542f5f"
 PKG_LICENSE="GPL"
-PKG_SITE="https://github.com/MilhouseVH/RTL8812AU"
-PKG_URL="https://github.com/MilhouseVH/RTL8812AU/archive/$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain linux"
-PKG_NEED_UNPACK="$LINUX_DEPENDS"
-PKG_LONGDESC="Realtek RTL8812AU Linux 3.x driver"
+PKG_SITE="https://github.com/aircrack-ng/rtl8812au"
+PKG_URL="https://github.com/aircrack-ng/rtl8812au/archive/${PKG_VERSION}.tar.gz"
+PKG_LONGDESC="Realtek RTL8812AU Linux driver"
 PKG_IS_KERNEL_PKG="yes"
 
 pre_make_target() {
@@ -19,13 +17,13 @@ pre_make_target() {
 
 make_target() {
   make V=1 \
-       ARCH=$TARGET_KERNEL_ARCH \
+       ARCH=${TARGET_KERNEL_ARCH} \
        KSRC=$(kernel_path) \
-       CROSS_COMPILE=$TARGET_KERNEL_PREFIX \
+       CROSS_COMPILE=${TARGET_KERNEL_PREFIX} \
        CONFIG_POWER_SAVING=n
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/$(get_full_module_dir)/$PKG_NAME
-    cp *.ko $INSTALL/$(get_full_module_dir)/$PKG_NAME
+  mkdir -p ${INSTALL}/$(get_full_module_dir)/${PKG_NAME}
+    cp *.ko ${INSTALL}/$(get_full_module_dir)/${PKG_NAME}
 }

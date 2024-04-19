@@ -3,18 +3,26 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libzip"
-PKG_VERSION="0.11.2"
-PKG_SHA256="7cfbbc2c540e154b933b6e9ec781e2671086bd8114eb744ae1a1ade34d2bb6bb"
+PKG_VERSION="1.10.1"
+PKG_SHA256="dc3c8d5b4c8bbd09626864f6bcf93de701540f761d76b85d7c7d710f4bd90318"
 PKG_LICENSE="GPL"
-PKG_SITE="http://www.nih.at/libzip/"
-PKG_URL="http://www.nih.at/libzip/${PKG_NAME}-${PKG_VERSION}.tar.xz"
-PKG_DEPENDS_TARGET="toolchain zlib"
+PKG_SITE="https://libzip.org/"
+PKG_URL="https://libzip.org/download/${PKG_NAME}-${PKG_VERSION}.tar.xz"
+PKG_DEPENDS_TARGET="toolchain zlib bzip2"
 PKG_LONGDESC="A C library for reading, creating, and modifying zip archives."
-PKG_TOOLCHAIN="configure"
 
-PKG_CONFIGURE_OPTS_TARGET="--disable-shared --enable-static"
+PKG_CMAKE_OPTS_TARGET="-DENABLE_COMMONCRYPTO=OFF \
+                       -DENABLE_GNUTLS=OFF \
+                       -DENABLE_MBEDTLS=OFF \
+                       -DENABLE_OPENSSL=OFF \
+                       -DENABLE_WINDOWS_CRYPTO=OFF \
+                       -DENABLE_ZSTD=OFF \
+                       -DBUILD_TOOLS=OFF \
+                       -DBUILD_REGRESS=OFF \
+                       -DBUILD_EXAMPLES=OFF \
+                       -DBUILD_DOC=OFF \
+                       -DBUILD_SHARED_LIBS=OFF"
 
 post_makeinstall_target() {
-  rm -rf $INSTALL/usr/bin
-  rm -rf $INSTALL/usr/lib
+  rm -rf ${INSTALL}/usr/lib
 }

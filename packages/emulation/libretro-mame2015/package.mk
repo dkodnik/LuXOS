@@ -2,8 +2,8 @@
 # Copyright (C) 2019-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-mame2015"
-PKG_VERSION="e1362eac25aa84a3864492c8175b4c48605d7d70"
-PKG_SHA256="88a12bb7b0d3ead20178b3b5ab0ccfa31874805ce3eee826e4e6f37bb541f3e5"
+PKG_VERSION="2599c8aeaf84f62fe16ea00daa460a19298c121c"
+PKG_SHA256="8f9a295f5d280130101c473e9754ec68ccbf45a1c1fe72d3405183ee6270b50d"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/mame2015-libretro"
 PKG_URL="https://github.com/libretro/mame2015-libretro/archive/${PKG_VERSION}.tar.gz"
@@ -30,6 +30,11 @@ pre_configure_target() {
   export REALCC=${CC}
   export CC=${CXX}
   export LD=${CXX}
+}
+
+pre_make_target() {
+  # precreate the build directories because they may be created too late
+  make ${PKG_MAKE_OPTS_TARGET} maketree
 }
 
 makeinstall_target() {

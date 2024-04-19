@@ -2,13 +2,13 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="pvr.octonet"
-PKG_VERSION="0.7.0-Leia"
-PKG_SHA256="ad78297e5934915bbcaafafbd2bfcccc187984a53ce88a2732831a82f0114140"
-PKG_REV="4"
+PKG_VERSION="20.3.0-Nexus"
+PKG_SHA256="cc83ada3b3d1dbf3d42fa41f2b221c640cdc9fd505a1c76e7b479f99fe1ec8c5"
+PKG_REV="5"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/DigitalDevices/pvr.octonet"
-PKG_URL="https://github.com/DigitalDevices/pvr.octonet/archive/$PKG_VERSION.tar.gz"
+PKG_URL="https://github.com/DigitalDevices/pvr.octonet/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain kodi-platform jsoncpp"
 PKG_SECTION=""
 PKG_SHORTDESC="A pvr plugin for DigitalDevices Octonet Sat>IP servers"

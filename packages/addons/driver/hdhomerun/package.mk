@@ -3,7 +3,7 @@
 
 PKG_NAME="hdhomerun"
 PKG_VERSION="7.0"
-PKG_REV="101"
+PKG_REV="0"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.silicondust.com/products/hdhomerun/dvbt/"
@@ -19,7 +19,7 @@ PKG_ADDON_NAME="HDHomeRun"
 PKG_ADDON_TYPE="xbmc.python.script"
 
 addon() {
-  mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/config/
-  cp -P $PKG_DIR/config/* $ADDON_BUILD/$PKG_ADDON_ID/config/
-  cp -P $PKG_DIR/settings-default.xml $ADDON_BUILD/$PKG_ADDON_ID/
+  mkdir -p ${ADDON_BUILD}/${PKG_ADDON_ID}/config/
+  cp -P ${PKG_DIR}/config/* ${ADDON_BUILD}/${PKG_ADDON_ID}/config/
+  cp -P ${PKG_DIR}/settings-default.xml ${ADDON_BUILD}/${PKG_ADDON_ID}/
 }

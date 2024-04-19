@@ -3,13 +3,13 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="screensaver.stars"
-PKG_VERSION="2.1.4-Leia"
-PKG_SHA256="98972a9af45015d902ade50db822dbded52d4473acde6bc4b01a5ab8c4af4269"
+PKG_VERSION="20.1.0-Nexus"
+PKG_SHA256="5ea0d19c3ef94e9603a0e06c78ae01cd6f9227da7b505eaa7d4527ca6018ea03"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/xbmc/screensaver.stars"
-PKG_URL="https://github.com/xbmc/screensaver.stars/archive/$PKG_VERSION.tar.gz"
+PKG_URL="https://github.com/xbmc/screensaver.stars/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain kodi-platform"
 PKG_SECTION=""
 PKG_SHORTDESC="screensaver.stars"
@@ -18,6 +18,6 @@ PKG_LONGDESC="screensaver.stars"
 PKG_IS_ADDON="yes"
 PKG_ADDON_TYPE="xbmc.ui.screensaver"
 
-if [ "$OPENGL" = "no" ] ; then
+if [ "${OPENGL}" = "no" ]; then
   exit 0
 fi

@@ -2,11 +2,11 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="libretro-yabause"
-PKG_VERSION="9be109f9032afa793d2a79b837c4cc232cea5929"
-PKG_SHA256="e1bd8e4850d48e5e74a605aa5a794baaf34ea7ce1b5162d07db53ad579cba12d"
+PKG_VERSION="4c96b96f7fbe07223627c469ff33376b2a634748"
+PKG_SHA256="76f50b21d81507ac29e80bbcfbfc8dbf71d6bf051f1267973eabed99a6681654"
 PKG_LICENSE="GPLv2"
 PKG_SITE="https://github.com/libretro/yabause"
-PKG_URL="https://github.com/libretro/yabause/archive/$PKG_VERSION.tar.gz"
+PKG_URL="https://github.com/libretro/yabause/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain kodi-platform"
 PKG_LONGDESC="game.libretro.yabause: Yabause for Kodi"
 PKG_TOOLCHAIN="make"
@@ -32,7 +32,8 @@ pre_make_target() {
 }
 
 makeinstall_target() {
-  mkdir -p $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME
-  cp $PKG_LIBPATH $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME
-  echo "set($PKG_LIBVAR $SYSROOT_PREFIX/usr/lib/$PKG_LIBNAME)" > $SYSROOT_PREFIX/usr/lib/cmake/$PKG_NAME/$PKG_NAME-config.cmake
+  mkdir -p ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}
+  cp ${PKG_LIBPATH} ${SYSROOT_PREFIX}/usr/lib/${PKG_LIBNAME}
+  echo "set(${PKG_LIBVAR} ${SYSROOT_PREFIX}/usr/lib/${PKG_LIBNAME})" > ${SYSROOT_PREFIX}/usr/lib/cmake/${PKG_NAME}/${PKG_NAME}-config.cmake
 }
+

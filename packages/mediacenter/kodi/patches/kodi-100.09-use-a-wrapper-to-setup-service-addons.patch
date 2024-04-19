@@ -1,14 +1,23 @@
-diff --git a/xbmc/addons/Addon.cpp b/xbmc/addons/Addon.cpp
-index 8343101b96..8130d99b83 100644
+From 069f73ce808caaf57057304e261afc1b76b37ea3 Mon Sep 17 00:00:00 2001
+From: Matthias Reichl <hias@horus.com>
+Date: Thu, 20 Oct 2022 19:24:59 +0200
+Subject: [PATCH] Use a wrapper to setup service addons
+
+---
+ xbmc/addons/Addon.cpp        | 35 +++++++++++++++++++++++++++++++++++
+ xbmc/addons/Addon.h          |  9 +++++++++
+ xbmc/addons/AddonManager.cpp |  3 +++
+ 3 files changed, 47 insertions(+)
+
 --- a/xbmc/addons/Addon.cpp
 +++ b/xbmc/addons/Addon.cpp
-@@ -397,6 +397,37 @@ AddonVersion CAddon::GetDependencyVersion(const std::string &dependencyID) const
-   return AddonVersion("0.0.0");
+@@ -658,6 +658,37 @@ CAddonVersion CAddon::GetDependencyVersi
+   return m_addonInfo->DependencyVersion(dependencyID);
  }
  
 +void LEAddonHook(const AddonPtr& addon, const LE_ADDON_CONTEXT context) {
 +
-+  if (addon->Type() == ADDON_SERVICE) {
++  if (addon->Type() == AddonType::SERVICE) {
 +    std::string contextStr;
 +    char cmd[255];
 +
@@ -19,8 +28,8 @@ index 8343101b96..8130d99b83 100644
 +    case LE_ADDON_DISABLED:
 +      contextStr = "disable";
 +      break;
-+    case LE_ADDON_POST_UPDATE:
-+      contextStr = "post-update";
++    case LE_ADDON_POST_INSTALL:
++      contextStr = "post-install";
 +      break;
 +    case LE_ADDON_PRE_UNINSTALL:
 +      contextStr = "pre-uninstall";
@@ -40,17 +49,16 @@ index 8343101b96..8130d99b83 100644
  void OnPreInstall(const AddonPtr& addon)
  {
    //Fallback to the pre-install callback in the addon.
-@@ -426,6 +457,9 @@ void OnPostInstall(const AddonPtr& addon, bool update, bool modal)
+@@ -687,6 +718,8 @@ void OnPostInstall(const AddonPtr& addon
      }
      closedir(addonsDir);
    }
 +
-+  if (update)
-+    LEAddonHook(addon, LE_ADDON_POST_UPDATE);
++  LEAddonHook(addon, LE_ADDON_POST_INSTALL);
    // OE
  
    addon->OnPostInstall(update, modal);
-@@ -433,6 +466,8 @@ void OnPostInstall(const AddonPtr& addon, bool update, bool modal)
+@@ -694,6 +727,8 @@ void OnPostInstall(const AddonPtr& addon
  
  void OnPreUnInstall(const AddonPtr& addon)
  {
@@ -59,18 +67,16 @@ index 8343101b96..8130d99b83 100644
    addon->OnPreUnInstall();
  }
  
-diff --git a/xbmc/addons/Addon.h b/xbmc/addons/Addon.h
-index b877839848..f7c0b717f6 100644
 --- a/xbmc/addons/Addon.h
 +++ b/xbmc/addons/Addon.h
-@@ -41,6 +41,15 @@ namespace ADDON
-   void OnPreUnInstall(const AddonPtr& addon);
-   void OnPostUnInstall(const AddonPtr& addon);
+@@ -31,6 +31,15 @@ void OnPostInstall(const AddonPtr& addon
+ void OnPreUnInstall(const AddonPtr& addon);
+ void OnPostUnInstall(const AddonPtr& addon);
  
 +typedef enum {
 +  LE_ADDON_ENABLED,
 +  LE_ADDON_DISABLED,
-+  LE_ADDON_POST_UPDATE,
++  LE_ADDON_POST_INSTALL,
 +  LE_ADDON_PRE_UNINSTALL,
 +} LE_ADDON_CONTEXT;
 +
@@ -79,23 +85,29 @@ index b877839848..f7c0b717f6 100644
  class CAddon : public IAddon
  {
  public:
-diff --git a/xbmc/addons/AddonManager.cpp b/xbmc/addons/AddonManager.cpp
-index e015f0755e..92879f19c1 100644
 --- a/xbmc/addons/AddonManager.cpp
 +++ b/xbmc/addons/AddonManager.cpp
-@@ -836,6 +836,7 @@ bool CAddonMgr::DisableAddon(const std::string& id)
+@@ -12,6 +12,7 @@
+ #include "FileItem.h"
+ #include "LangInfo.h"
+ #include "ServiceBroker.h"
++#include "addons/Addon.h"
+ #include "addons/AddonBuilder.h"
+ #include "addons/AddonDatabase.h"
+ #include "addons/AddonEvents.h"
+@@ -863,6 +864,7 @@ bool CAddonMgr::DisableAddon(const std::
    AddonPtr addon;
-   if (GetAddon(id, addon, ADDON_UNKNOWN, false) && addon != NULL)
+   if (GetAddon(id, addon, AddonType::UNKNOWN, OnlyEnabled::CHOICE_NO) && addon != nullptr)
    {
 +    ADDON::LEAddonHook(addon, ADDON::LE_ADDON_DISABLED);
-     CServiceBroker::GetEventLog().Add(EventPtr(new CAddonManagementEvent(addon, 24141)));
-   }
- 
-@@ -864,6 +865,7 @@ bool CAddonMgr::EnableSingle(const std::string& id)
-   if (!m_database.DisableAddon(id, false))
+     auto eventLog = CServiceBroker::GetEventLog();
+     if (eventLog)
+       eventLog->Add(EventPtr(new CAddonManagementEvent(addon, 24141)));
+@@ -914,6 +916,7 @@ bool CAddonMgr::EnableSingle(const std::
+   if (!m_database->EnableAddon(id))
      return false;
    m_disabled.erase(id);
 +  ADDON::LEAddonHook(addon, ADDON::LE_ADDON_ENABLED);
  
-   CServiceBroker::GetEventLog().Add(EventPtr(new CAddonManagementEvent(addon, 24064)));
- 
+   // If enabling a repo add-on without an origin, set its origin to its own id
+   if (addon->HasType(AddonType::REPOSITORY) && addon->Origin().empty())

@@ -3,13 +3,13 @@
 # Copyright (C) 2018-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="audiodecoder.fluidsynth"
-PKG_VERSION="2.1.1-Leia"
-PKG_SHA256="3203b2375a3ca18d01078b27463344efcae194653cb2ceb2850d1f552a1250bf"
-PKG_REV="1"
+PKG_VERSION="20.2.1-Nexus"
+PKG_SHA256="dd8ca6386a3beed360c1d2f989cd81553baf81652007fdfd478a28b44b68db10"
+PKG_REV="6"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/xbmc/audiodecoder.fluidsynth"
-PKG_URL="https://github.com/xbmc/audiodecoder.fluidsynth/archive/$PKG_VERSION.tar.gz"
+PKG_URL="https://github.com/xbmc/audiodecoder.fluidsynth/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain kodi-platform fluidsynth"
 PKG_SECTION=""
 PKG_SHORTDESC="audiodecoder.fluidsynth"

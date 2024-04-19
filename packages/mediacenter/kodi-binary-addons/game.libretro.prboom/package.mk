@@ -2,13 +2,13 @@
 # Copyright (C) 2016-present Team LibreELEC (https://libreelec.tv)
 
 PKG_NAME="game.libretro.prboom"
-PKG_VERSION="2.5.0.10-Leia"
-PKG_SHA256="63d2463e3cb6b5b8d881d59ca6cee9c9fe8af3d7e71c2dd7bf311173f0a0ac1f"
+PKG_VERSION="2.5.0.37-Nexus"
+PKG_SHA256="ecd235f78184319f39843a1e1ac63dc3de2bb23d07663b00dfe78636cda54deb"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/kodi-game/game.libretro.prboom"
-PKG_URL="https://github.com/kodi-game/game.libretro.prboom/archive/$PKG_VERSION.tar.gz"
+PKG_URL="https://github.com/kodi-game/game.libretro.prboom/archive/${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain kodi-platform libretro-prboom"
 PKG_SECTION=""
 PKG_LONGDESC="game.libretro.prboom: prboom for Kodi"

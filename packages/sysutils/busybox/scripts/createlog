@@ -90,7 +90,7 @@ mkdir -p $BASEDIR/$LOGDIR
       /storage/.config/modules-load.d/*.conf \
       /storage/.config/sleep.d/*.power \
       /storage/.config/sysctl.d/*.conf \
-      /storage/.config/udev.rules.d/.rules \
+      /storage/.config/udev.rules.d/*.rules \
   ; do
     if [ -f "$i" ] ; then
       getlog_cmd cat $i
@@ -136,7 +136,7 @@ mkdir -p $BASEDIR/$LOGDIR
 
 # varlog.log
   LOGFILE="06_varlog.log"
-  for i in `find /var/log -type f`; do
+  for i in `find /var/log -name journal -prune -o -type f -print`; do
     getlog_cmd cat $i
   done
 
