@@ -10,3 +10,4 @@ export THREADCOUNT=8
 PROJECT=Generic ARCH=x86_64 make image
 PROJECT=RPi DEVICE=RPi2 ARCH=arm make noobs
 PROJECT=RPi DEVICE=RPi4 ARCH=arm make noobs
+PROJECT=RPi DEVICE=RPi5 ARCH=arm make noobs
